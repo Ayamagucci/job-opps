@@ -12,7 +12,7 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PW,
 (async() => {
   try {
     // create tables (sync models)
-    await sequelize.sync({ force: true });
+    await sequelize.sync();
     console.log(`User "${ DB_USER }" connected to DB: ${ DB_NAME }`);
 
   } catch(err) {

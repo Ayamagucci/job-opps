@@ -4,7 +4,6 @@ const sequelize = require('./index');
 const User = sequelize.define('User', {
   uuid: {
     type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4, // generates UUID
     allowNull: false,
     unique: true
   }
@@ -33,6 +32,10 @@ const Job = sequelize.define('Job', {
   },
   salary_max: {
     type: DataTypes.DECIMAL,
+    allowNull: false
+  },
+  redirect_url: {
+    type: DataTypes.TEXT,
     allowNull: false
   }
 });

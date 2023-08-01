@@ -16,6 +16,7 @@ const Search = ({
       <Grid item xs={ 12 } sm={ 6 }>
         <TextField
           label="Title"
+          placeholder="Space-delimited..."
           value={ title }
           onChange={ (e) => setTitle(e.target.value) }
           variant="outlined"
@@ -34,9 +35,10 @@ const Search = ({
         />
       </Grid> */}
 
-      <Grid item xs={ 12 } sm={6}>
+      <Grid item xs={ 12 } sm={ 6 }>
         <TextField
           label="Keywords"
+          placeholder="Space-delimited..."
           value={ keywords }
           onChange={ (e) => setKeywords(e.target.value) }
           variant="outlined"

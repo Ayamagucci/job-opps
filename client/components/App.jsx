@@ -1,6 +1,6 @@
 const { API_URL, API_ID, API_KEY } = process.env;
 import React, { useState, useEffect } from 'react';
-import { Box } from '@mui/material';
+import { Box, Typography, Slider } from '@mui/material';
 import axios from 'axios';
 import Search from './Search';
 import JobsList from './JobsList';
@@ -16,12 +16,20 @@ const App = () => {
   const [ jobsToDisplay, setJobsToDisplay ] = useState('all');
   const [ jobsDisplayed, setJobsDisplayed ] = useState(allJobs);
 
-  const [ page, setPage ] = useState(1);
-  const [ count, setCount ] = useState(25);
+  const [ count, setCount ] = useState(30);
+  // const [ page, setPage ] = useState(1);
+  // const [ startIndex, setStartIndex ] = useState(0);
+
+  // hash marks on slider
+  const marks = [ 10, 20, 30, 40, 50 ]
+    .map((countIncrem) =>({
+      value: countIncrem,
+      label: countIncrem.toString()
+    }));
 
   const [ title, setTitle ] = useState('');
-  // const [ location, setLocation ] = useState('');
   const [ keywords, setKeywords ] = useState('');
+  // const [ location, setLocation ] = useState('');
 
   // SAVED JOBS
   const [ userId, setUserId ] = useState(
@@ -45,7 +53,7 @@ const App = () => {
 
     const fetchSavedJobs = async() => {
       try {
-        const query = await axios.get(`/api/jobs/saved/${ userId }`);
+        const query = await axios.get(`/jobs/saved/${ userId }`);
         setSavedJobs(query.data.savedJobs);
 
       } catch(err) {
@@ -56,7 +64,7 @@ const App = () => {
     fetchAllJobs();
     fetchSavedJobs();
 
-  }, [ count, page, userId, jobsToDisplay ]);
+  }, [ count, /* page, */ userId, jobsToDisplay ]);
 
   const fetchAllJobs = async() => {
     try {
@@ -108,7 +116,7 @@ const App = () => {
       });
 
       setAllJobs(query.data.results);
-      console.dir(query.data.results)
+      console.dir(query.data.results);
 
     } catch(err) {
       console.error(`Error fetching all jobs: ${ err }`);
@@ -124,12 +132,11 @@ const App = () => {
       console.error(`Error submitting user input: ${ err }`);
     }
     setTitle('');
-    // setLocation('');
     setKeywords('');
+    // setLocation('');
   };
 
-  const [ startIndex, setStartIndex ] = useState(0);
-
+  /*
   const handlePageChange = (direction) => {
     setPage((prevPage) => {
       const newPage = (direction === 'next')
@@ -142,18 +149,20 @@ const App = () => {
       return newPage;
     });
   };
+  */
 
   const changeCount = (e) => {
     const newCount = e.target.value;
     setCount(newCount);
 
     // reset page num to 1 when count changes
-    setPage(1);
+    // setPage(1);
 
     // reset startIndex to 0 when count changes
-    setStartIndex(0);
+    // setStartIndex(0);
   };
 
+  /*
   const [ geolocation, setGeolocation ] = useState(null);
 
   const fetchGeolocation = async() => {
@@ -179,6 +188,7 @@ const App = () => {
       }
     }
   };
+  */
 
   return (
     <Box sx={{ mt: 2 }}>
@@ -204,9 +214,44 @@ const App = () => {
         setJobsToDisplay={ setJobsToDisplay }
       />
 
+      <Typography
+        variant="h2"
+        component="h1"
+        align="center"
+        sx={{
+          fontFamily: 'Luminari, fantasy',
+          fontWeight: 'bold',
+          color: 'blue',
+          letterSpacing: '2.5px',
+          // mt: '1.5rem',
+          mb: '4.5rem'
+        }}
+        gutterBottom
+      >
+        indubitably
+      </Typography>
+
+      <Box sx={{
+        display: 'flex',
+        margin: 'auto',
+        width: '15rem'
+      }}>
+        <Slider
+          getAriaValueText={ (val) => `Count: ${ val }` }
+          valueLabelDisplay="auto"
+          value={ count }
+          onChange={ changeCount }
+          step={ 10 }
+          min={ 10 }
+          max={ 50 }
+          marks={ marks }
+        />
+      </Box>
+
       <JobsList
         jobsDisplayed={ (jobsToDisplay === 'all') ? (allJobs) : (savedJobs) }
         userId={ userId }
+        savedJobs={ savedJobs }
         setSavedJobs={ setSavedJobs }
       />
 

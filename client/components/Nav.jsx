@@ -8,7 +8,11 @@ const Nav = ({ handlePageChange, page, count, jobsDisplayed }) => {
   const totalPages = Math.ceil(jobsDisplayed?.length / count);
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', mb: 10 }}>
+    <Box sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      mb: 10
+    }}>
       <Button
         variant="contained"
         onClick={ () => handlePageChange('prev') }

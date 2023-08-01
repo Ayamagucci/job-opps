@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
-import { Box, FormControl, Select, MenuItem } from '@mui/material';
+import { Box, ToggleButtonGroup, ToggleButton } from '@mui/material';
 
 const Switcher = ({ jobsToDisplay, setJobsToDisplay }) => (
 
-  <Box display="flex" justifyContent="center">
-    <FormControl>
-      <Select
-        value={ jobsToDisplay }
-        onChange={ (e) => setJobsToDisplay(e.target.value) }
-      >
-        <MenuItem key="all" value="all">
-          All
-        </MenuItem>
-        <MenuItem key="saved" value="saved">
-          Saved
-        </MenuItem>
-      </Select>
-    </FormControl>
+  <Box sx={{
+    display: 'flex',
+    justifyContent: 'center',
+    mb: '5rem'
+  }}>
+    <ToggleButtonGroup
+      value={ jobsToDisplay }
+      onChange={ (e) => setJobsToDisplay(e.target.value) }
+      exclusive
+    >
+      <ToggleButton key="all" value="all">
+        All
+      </ToggleButton>
+      <ToggleButton key="saved" value="saved">
+        Saved
+      </ToggleButton>
+    </ToggleButtonGroup>
   </Box>
 );
 

@@ -39,19 +39,18 @@ module.exports = {
       const { userId, jobData } = req.body;
 
       // find user in DB
-      let user = await User.findOne({
+      const user = await User.findOne({
         where: { uuid: userId }
       });
 
       if (!user) {
-        // return res.status(404).json({ error: 'User not found' });
-
-        user = await User.create({ uuid: userId });
-        console.log(`New user saved to DB: Entry ${ user.id }`);
+        await User.create({ uuid: userId });
       }
 
       // create & save job
       const savedJob = await Job.create(jobData);
+
+      // add association
       await user.addJob(savedJob);
 
       res.status(201).json({
@@ -70,16 +69,13 @@ module.exports = {
       const { userId } = req.params;
 
       // find by ID & include saved jobs data
-      let user = await User.findOne({
+      const user = await User.findOne({
         where: { uuid: userId },
         include: Job
       });
 
       if (!user) {
-        // return res.status(404).json({ error: 'User not found' });
-
-        user = await User.create({ uuid: userId });
-        console.log(`New user saved to DB: Entry ${ user.id }`);
+        await User.create({ uuid: userId });
       }
 
       res.status(200).json({ savedJobs: user.Jobs });
@@ -93,21 +89,18 @@ module.exports = {
 
   deleteSavedJob: async(req, res) => {
     try {
-      const { jobId, userId } = req.params;
+      const { userId, jobId } = req.params;
 
       // find by ID
-      let user = await User.findOne({
+      const user = await User.findOne({
         where: { uuid: userId }
       });
 
       if (!user) {
-        // return res.status(404).json({ error: 'User not found' });
-
-        user = await User.create({ uuid: userId });
-        console.log(`New user saved to DB: Entry ${ user.id }`);
+        await User.create({ uuid: userId });
       }
 
-      // remove job w/ specified ID
+      // remove association
       await user.removeJob(jobId);
 
       res.status(200).json({
