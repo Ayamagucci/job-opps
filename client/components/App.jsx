@@ -69,14 +69,14 @@ const App = () => {
     fetchSavedJobs();
     // fetchLocation();
 
-  }, [ count, page, userId, jobsToDisplay ]);
+  }, [ count, /* page, */ userId, jobsToDisplay ]);
 
   const fetchAllJobs = async() => {
     try {
       const queryParams = new URLSearchParams({
         app_id: API_ID,
         app_key: API_KEY,
-        results_per_page: count,
+        results_per_page: count
       });
 
       const constructWhat = (jobTitle, searchTerms) => {
@@ -152,6 +152,7 @@ const App = () => {
     setKeywords('');
   };
 
+  /*
   const handlePageChange = (direction) => {
     setPage((prevPage) => {
       const newPage = (direction === 'next')
@@ -164,6 +165,7 @@ const App = () => {
       return newPage;
     });
   };
+  */
 
   const changeCount = (e) => {
     const newCount = e.target.value;
