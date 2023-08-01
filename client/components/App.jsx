@@ -1,11 +1,9 @@
-const { API_URL, API_ID, API_KEY } = process.env;
+const {/* API_URL, */ API_ID, API_KEY } = process.env;
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Slider } from '@mui/material';
 import axios from 'axios';
 import Search from './Search';
 import JobsList from './JobsList';
-import Nav from './Nav';
-import CountSetter from './CountSetter';
 import Switcher from './Switcher';
 
 const App = () => {
@@ -228,13 +226,6 @@ const App = () => {
         // city={ city }
         // setCity={ setCity }
       />
-
-      {/* <Nav
-        page={ page }
-        count={ count }
-        jobsDisplayed={ jobsDisplayed }
-        handlePageChange={ handlePageChange }
-      /> */}
 
       <Switcher
         jobsToDisplay={ jobsToDisplay }
