@@ -221,7 +221,7 @@ const App = () => {
         sx={{
           fontFamily: 'Luminari, fantasy',
           fontWeight: 'bold',
-          color: 'blue',
+          color: '#1e88e5',
           letterSpacing: '2.5px',
           // mt: '1.5rem',
           mb: '4.5rem'
