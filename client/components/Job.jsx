@@ -103,7 +103,7 @@ const Job = ({
             <Box sx={{ ml: '10px' }}>
               { (isJobSaved) ? (
                 <Fab
-                color="#ab003c"
+                color="secondary"
                 size="small"
                 onClick={ () => handleDelete(id) }
                 >
