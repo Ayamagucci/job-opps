@@ -17,8 +17,8 @@ const App = () => {
   const [ jobsDisplayed, setJobsDisplayed ] = useState(allJobs);
 
   const [ count, setCount ] = useState(30);
-  // const [ page, setPage ] = useState(1);
-  // const [ startIndex, setStartIndex ] = useState(0);
+  const [ page, setPage ] = useState(1);
+  const [ startIndex, setStartIndex ] = useState(0);
 
   // hash marks on slider
   const marks = [ 10, 20, 30, 40, 50 ]
@@ -29,7 +29,11 @@ const App = () => {
 
   const [ title, setTitle ] = useState('');
   const [ keywords, setKeywords ] = useState('');
-  // const [ location, setLocation ] = useState('');
+
+  // const [ country, setCountry ] = useState('');
+  // const [ state, setState ] = useState('');
+  // const [ county, setCounty ] = useState('');
+  // const [ city, setCity ] = useState('');
 
   // SAVED JOBS
   const [ userId, setUserId ] = useState(
@@ -63,15 +67,16 @@ const App = () => {
 
     fetchAllJobs();
     fetchSavedJobs();
+    // fetchLocation();
 
-  }, [ count, /* page, */ userId, jobsToDisplay ]);
+  }, [ count, page, userId, jobsToDisplay ]);
 
   const fetchAllJobs = async() => {
     try {
       const queryParams = new URLSearchParams({
         app_id: API_ID,
         app_key: API_KEY,
-        results_per_page: count
+        results_per_page: count,
       });
 
       const constructWhat = (jobTitle, searchTerms) => {
@@ -102,8 +107,20 @@ const App = () => {
       }
 
       /*
-      if (location) {
-        queryParams.append('location', location);
+      if (country) {
+        queryParams.append('location0', country);
+
+        if (state) {
+          queryParams.append('location1', state.split(' ').join('%20'));
+
+          if (county) {
+            queryParams.append('location2', county.split(' ').join('%20'));
+
+            if (city) {
+              queryParams.append('location3', city.split(' ').join('%20'));
+            }
+          }
+        }
       }
       */
 
@@ -111,7 +128,7 @@ const App = () => {
 
       const query = await axios({
         method: 'get',
-        baseURL: 'https://api.adzuna.com/v1/api/jobs/us/search/1',
+        baseURL: `https://api.adzuna.com/v1/api/jobs/us/search/${ page }`,
         params: queryParams,
       });
 
@@ -133,10 +150,8 @@ const App = () => {
     }
     setTitle('');
     setKeywords('');
-    // setLocation('');
   };
 
-  /*
   const handlePageChange = (direction) => {
     setPage((prevPage) => {
       const newPage = (direction === 'next')
@@ -149,23 +164,20 @@ const App = () => {
       return newPage;
     });
   };
-  */
 
   const changeCount = (e) => {
     const newCount = e.target.value;
     setCount(newCount);
 
     // reset page num to 1 when count changes
-    // setPage(1);
+    setPage(1);
 
     // reset startIndex to 0 when count changes
-    // setStartIndex(0);
+    setStartIndex(0);
   };
 
   /*
-  const [ geolocation, setGeolocation ] = useState(null);
-
-  const fetchGeolocation = async() => {
+  const fetchLocation = async() => {
     const { geolocation } = navigator;
 
     if (geolocation) {
@@ -180,8 +192,15 @@ const App = () => {
           `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${ latitude }&longitude=${ longitude }&localityLanguage=en`
         );
 
-        const { postalCode } = locationRes.data;
-        setGeolocation(postalCode);
+        console.dir(locationRes.data);
+
+        const { countryCode, principalSubdivision, city } = locationRes.data;
+        const { name } = locationRes.data.localityInfo.administrative[ 3 ];
+
+        setCountry(countryCode);
+        setState(principalSubdivision);
+        setCounty(name);
+        setCity(city);
 
       } catch (err) {
         console.error(`Error fetching location: ${ err.response.data }`);
@@ -195,11 +214,17 @@ const App = () => {
       <Search
         title={ title }
         setTitle={ setTitle }
-        // location={ location }
-        // setLocation={ setLocation }
         keywords={ keywords }
         setKeywords={ setKeywords }
         handleSubmit={ handleSubmit }
+        // country={ country }
+        // setCountry={ setCountry }
+        // state={ state }
+        // setState={ setState }
+        // county={ county }
+        // setCounty={ setCounty }
+        // city={ city }
+        // setCity={ setCity }
       />
 
       {/* <Nav
@@ -254,12 +279,6 @@ const App = () => {
         savedJobs={ savedJobs }
         setSavedJobs={ setSavedJobs }
       />
-
-      {/* <CountSetter
-        count={ count }
-        setCount={ setCount }
-        changeCount={ changeCount }
-      /> */}
     </Box>
   );
 };
