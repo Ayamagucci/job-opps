@@ -1,4 +1,4 @@
-# Indubitably Job Search App
+# Indubitably
 
 Indubitably is a job search app that allows users to search for job listings from the Adzuna API, save their favorite job listings, and view them later. This README provides an overview of the app's structure and functionality.
 
